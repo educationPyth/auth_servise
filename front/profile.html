@@ -1,0 +1,52 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>User Login</title>  
+</head>  
+<body>  
+    <h1>Profile</h1>  
+
+    <button id="get_user">Получить данные пользователя</button>
+    <div id="data_user"></div>
+
+    <script>
+        const btn_get_user = document.querySelector("#get_user");
+        const data = document.querySelector("#data_user");
+
+        btn_get_user.addEventListener("click", async function() {
+            try {  
+                const response = await fetch("http://127.0.0.1:8000/user", {  
+                    method: "GET",  
+                    headers: {  
+                        "Content-Type": "application/json"  
+                    },   
+                });  
+
+                if (!response.ok) {  
+                    throw new Error(`Ошибка ${response.status}`); // Обработка ошибки, если ответ не успешен  
+                }  
+
+                const result = await response.json(); 
+                console.log(result);
+                data.innerHTML = '';
+
+                for (var i = 0; i < result.data.length; i++) {
+                    data.innerHTML += `<p>Fullname: ${result.data[i].fullname}, Email: ${result.data[i].email}</p>`;
+                }
+                
+            } catch (error) {  
+                console.error("Ошибка при получении данных:", error);  
+                data.innerHTML = "Произошла ошибка при получении данных.";  
+            } 
+        });
+
+
+
+
+
+    </script>
+
+</body>
+</html>

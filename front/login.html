@@ -1,0 +1,62 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>User Login</title>  
+</head>  
+<body>  
+    <h1>Login</h1>  
+    <form id="loginForm">  
+        <label for="email">Email:</label>  
+        <input type="email" id="email" name="email" required>  
+        <br>
+        <br>
+        <label for="password">Password:</label>  
+        <input type="password" id="password" name="password" required>  
+        <br>  
+        <br>  
+        <button type="submit" id="btn_enter">Login</button>  
+    </form>  
+
+    <button id="btn_signup">Sign Up</button>
+
+
+    <script>
+        btn_signup = document.querySelector("#btn_signup");
+
+        btn_signup.addEventListener('click', () => {
+            window.location.href = "signup.html";
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {  
+            event.preventDefault(); // Предотвращаем отправку формы  
+            
+            const email = document.getElementById("email").value; // Извлечение email  
+            const password = document.getElementById("password").value; // Извлечение password  
+
+            const response = await fetch("http://127.0.0.1:8000/user/login", {  
+                method: "POST",  
+                headers: {  
+                    "Content-Type": "application/json"  
+                },  
+                body: JSON.stringify({ email, password })  
+            });  
+            
+            const result = await response.json();  
+            console.log(result); // Выводим ответ сервера в консоль  
+
+            if (response.ok && result.access_token) { 
+                alert("Enter for profile! " + result.access_token);
+                window.location.href = "profile.html"; // Перенаправление на страницу профиля  
+            } else {  
+                alert("Error: " + result.error);  
+            }  
+        });  
+
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>User Signup</title>  
+</head>  
+<body>  
+    <h1>Sign Up</h1>  
+    <form id="signupForm">  
+        <label for="email">Email:</label>  
+        <input type="email" id="email" name="email" required>  
+        <br>  
+        <br>  
+        <label for="fullname">Full Name:</label>  
+        <input type="text" id="fullname" name="fullname" required>  
+        <br>  
+        <br>  
+        <label for="password">Password:</label>  
+        <input type="password" id="password" name="password" required>  
+        <br>  
+        <br>  
+        <button type="submit">Create user</button>  
+    </form>  
+
+
+    <button id="btn_login">Log in</button>
+
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async function(event) {  
+            event.preventDefault(); // Предотвращаем отправку формы  
+
+            const emailInput = document.getElementById("email");  
+            const fullnameInput = document.getElementById("fullname");  
+            const passwordInput = document.getElementById("password");  
+
+            const email = emailInput.value;  
+            const fullname = fullnameInput.value;  
+            const password = passwordInput.value;  
+
+            const response = await fetch("http://127.0.0.1:8000/user/singup", {  
+                method: "POST",  
+                headers: {  
+                    "Content-Type": "application/json"  
+                },  
+                body: JSON.stringify({ email, fullname, password })  
+            });  
+
+            const result = await response.json();  
+            console.log(result); // Выводим ответ сервера в консоль  
+            if (response.ok) {  
+                alert("User created successfully!");
+                emailInput.value = '';
+                fullnameInput.value = '';
+                passwordInput.value = '';
+            } else {  
+                alert("Error: " + result.detail);  
+            } 
+        });  
+
+
+        const btn_login = document.querySelector("#btn_login");  
+
+        btn_login.addEventListener('click', async function() {  
+            console.log('click');
+            // Перенаправление на страницу логина  
+            window.location.href = "login.html"; // Замените "login.html" на ваш URL  
+        }); 
+    </script>  
+</body>  
+</html>
